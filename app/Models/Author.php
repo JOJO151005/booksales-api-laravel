@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
-class Author
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Author extends Model
 {
-    public static function getAll()
+    use HasFactory;
+
+    // Menentukan kolom yang boleh diisi
+    protected $fillable = ['nama', 'negara'];
+
+    public function books()
     {
-        return [
-            ['id' => 1, 'nama' => 'Arno', 'negara' => 'Indonesia'],
-            ['id' => 2, 'nama' => 'Delpi', 'negara' => 'Indonesia'],
-            ['id' => 3, 'nama' => 'Dzikri', 'negara' => 'Indonesia'],
-            ['id' => 4, 'nama' => 'Rubena', 'negara' => 'Indonesia'],
-            ['id' => 5, 'nama' => 'Dongker', 'negara' => 'Indonesia'],
-        ];
+        return $this->hasMany(Book::class);
     }
 }
