@@ -10,6 +10,11 @@ class BookController extends Controller
     {
         // Mengambil semua data buku beserta relasi data author-nya
         $books = Book::with('author')->get();
-        return view('book.index', compact('books'));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Buku Berhasil Diambil',
+            'data'    => $books
+        ], 200);
     }
 }
