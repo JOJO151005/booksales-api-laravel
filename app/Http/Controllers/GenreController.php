@@ -7,19 +7,18 @@ use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
-    // Read all data genre dari database
+    // Menampilkan semua data genre
     public function index()
     {
         $genres = Genre::all();
-
         return response()->json([
             'success' => true,
-            'message' => 'Data Genre Berhasil Diambil',
+            'message' => 'Daftar data genre',
             'data'    => $genres
         ], 200);
     }
 
-    // Create data genre ke database
+    // Menambahkan data genre baru
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -30,8 +29,72 @@ class GenreController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Genre Berhasil Ditambahkan',
+            'message' => 'Data genre berhasil ditambahkan',
             'data'    => $genre
         ], 201);
+    }
+
+    // Menampilkan data genre berdasarkan ID
+    public function show($id)
+    {
+        $genre = Genre::find($id);
+
+        if (!$genre) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data genre tidak ditemukan'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail data genre',
+            'data'    => $genre
+        ], 200);
+    }
+
+    // Memperbarui data genre berdasarkan ID
+    public function update(Request $request, $id)
+    {
+        $genre = Genre::find($id);
+
+        if (!$genre) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data genre tidak ditemukan'
+            ], 404);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $genre->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data genre berhasil diperbarui',
+            'data'    => $genre
+        ], 200);
+    }
+
+    // Menghapus data genre berdasarkan ID
+    public function destroy($id)
+    {
+        $genre = Genre::find($id);
+
+        if (!$genre) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data genre tidak ditemukan'
+            ], 404);
+        }
+
+        $genre->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data genre berhasil dihapus'
+        ], 200);
     }
 }
